@@ -195,7 +195,7 @@ function setTheme(t){document.body.setAttribute('data-theme',t);try{localStorage
 <div class="wrap">
 <header>
 <img src="/logo.png" class="logo" alt="Waleed Logo">
-<h1>༒︎ 𝐖 𝐀 𝐋  𝐄  ༾︎</h1>
+<h1>𝑾𝑨𝑳𝑬𝑬𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 𝑻𝑶𝑶𝑳  ༾︎</h1>
 <div class="tag">ᴡʜᴀᴛꜱᴀᴘ ꜱʏꜱᴛᴇᴍ ᴄᴏɴᴛʀᴏ ᴘᴀɴᴇʟ</div>
 </header>
 ${content}
@@ -901,7 +901,7 @@ process.on('SIGINT', () => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀  𝐀 𝐋 𝐄 𝐄  🔥 Server Started on http://localhost:${PORT}`);
+    console.log(`🚀  𝑾𝐀 𝐋 𝐄 𝐄𝑫  🔥 Server Started on http://localhost:${PORT}`);
     console.log(`✅ All Systems Integrated Successfully!`);
     console.log(`📊 Dashboard: http://localhost:${PORT}`);
 });
