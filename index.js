@@ -195,7 +195,7 @@ function setTheme(t){document.body.setAttribute('data-theme',t);try{localStorage
 <div class="wrap">
 <header>
 <img src="/logo.png" class="logo" alt="Waleed Logo">
-<h1>𝑾𝑨𝑳𝑬𝑬𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 𝑻𝑶𝑶𝑳</h1>
+<h1>💛 𝑾𝑨𝑳𝑬𝑬𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 𝑻𝑶𝑶𝑳 💚</h1>
 <div class="tag">ᴡʜᴀᴛꜱᴀᴘ ꜱʏꜱᴛᴇᴍ ᴄᴏɴᴛʀᴏ ᴘᴀɴᴇʟ</div>
 </header>
 ${content}
