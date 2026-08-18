@@ -31,14 +31,14 @@ if (!fs.existsSync("data")) {
     fs.mkdirSync("data");
 }
 if (!fs.existsSync("public")) {
-    fs.mkdirSync("public"); // <-- APNI DP "public/logo.png" KE NAAM SE SAVE KAREIN
+    fs.mkdirSync("public"); // <-- APNI DP "public/logo.png" KE NAAM SE SAVE KAREIN (sirf logo ke liye)
 }
 
 const upload = multer({ dest: "uploads/" });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public"))); // serves logo.png
+app.use(express.static(path.join(__dirname, "public"))); // <-- sirf logo.png serve karne ke liye
 
 // Store active client instances and tasks
 const activeClients = new Map();
@@ -130,70 +130,53 @@ setInterval(() => {
 }, 60 * 60 * 1000);
 
 /* ============================================================
-   WALEED — MULTI-THEME MODERN SYSTEM (4 THEMES + SWITCHER)
-   White RGB | Dark RGB | Neon Purple | Royal Gold
+   SIRF HTML KA KAAM — DARK RGB THEME + WALEED NAME + DP LOGO
+   (Backend logic 100% original hai)
    ============================================================ */
 const THEME_CSS = `
+:root{--rgb:linear-gradient(90deg,#ff0000,#ffaa00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
 *{margin:0;padding:0;box-sizing:border-box}
-body[data-theme="white"]{--bg:#ffffff;--card:#ffffff;--text:#141414;--muted:#777777;--input:#fafafa;--line:#e2e2e2;
---rgb:linear-gradient(90deg,#ff0000,#ffaa00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
-body[data-theme="dark"]{--bg:#0b0b10;--card:#15151d;--text:#f2f2f2;--muted:#9aa0b5;--input:#1c1c26;--line:#2a2a38;
---rgb:linear-gradient(90deg,#ff0000,#ffaa00,#00ff00,#00ffff,#0000ff,#ff00ff,#ff0000)}
-body[data-theme="neon"]{--bg:#0d001a;--card:#180228;--text:#f0e6ff;--muted:#b39ddb;--input:#200533;--line:#3a1052;
---rgb:linear-gradient(90deg,#ff00ff,#7d4dff,#00ffff,#ff00ff)}
-body[data-theme="gold"]{--bg:#fffdf7;--card:#ffffff;--text:#2b2113;--muted:#8a7a5c;--input:#fbf7ee;--line:#eadfc8;
---rgb:linear-gradient(90deg,#b8860b,#ffd700,#fff2b0,#ffd700,#b8860b)}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);padding:20px;
-transition:background .4s ease,color .4s ease}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0a0f;color:#f2f2f2;padding:20px}
 .wrap{max-width:1000px;margin:auto}
-.themes{position:fixed;top:14px;right:14px;display:flex;gap:8px;z-index:99;background:var(--card);
-padding:8px 10px;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.18)}
-.themes button{width:26px;height:26px;border-radius:50%;border:2px solid rgba(128,128,128,.4);
-cursor:pointer;padding:0;animation:none}
-.themes button:hover{transform:scale(1.15)}
-.t-white{background:linear-gradient(135deg,#ffffff 50%,#d9d9d9 50%)}
-.t-dark{background:linear-gradient(135deg,#111111,#3a3a3a)}
-.t-neon{background:linear-gradient(90deg,#ff00ff,#00ffff)}
-.t-gold{background:linear-gradient(90deg,#b8860b,#ffd700)}
 header{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0 20px}
 .logo{width:96px;height:96px;border-radius:50%;object-fit:cover;border:4px solid transparent;
-background:linear-gradient(var(--card),var(--card)) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
-animation:rgb 4s linear infinite;box-shadow:0 0 25px rgba(0,0,0,.18)}
+background:linear-gradient(#15151d,#15151d) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
+animation:rgb 4s linear infinite;box-shadow:0 0 25px rgba(255,0,255,.25)}
 h1{font-size:2rem;letter-spacing:6px;font-weight:800;background:var(--rgb);background-size:300% 100%;
 -webkit-background-clip:text;background-clip:text;color:transparent;animation:rgb 4s linear infinite}
-.tag{color:var(--muted);letter-spacing:3px;font-size:.75rem;text-transform:uppercase}
+.tag{color:#9aa0b5;letter-spacing:3px;font-size:.75rem;text-transform:uppercase}
 @keyframes rgb{0%{background-position:0% 50%}100%{background-position:300% 50%}}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:18px 0}
 .stat,.card{border:2px solid transparent;border-radius:16px;
-background:linear-gradient(var(--card),var(--card)) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
-animation:rgb 5s linear infinite;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+background:linear-gradient(#15151d,#15151d) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
+animation:rgb 5s linear infinite;box-shadow:0 4px 18px rgba(0,0,0,.5)}
 .stat{padding:14px;text-align:center}
 .stat b{display:block;font-size:1.4rem}
-.stat span{color:var(--muted);font-size:.72rem;letter-spacing:2px;text-transform:uppercase}
+.stat span{color:#9aa0b5;font-size:.72rem;letter-spacing:2px;text-transform:uppercase}
 .card{padding:18px;margin:16px 0}
 h2{font-size:.95rem;letter-spacing:3px;margin:12px 0;text-transform:uppercase;background:var(--rgb);
 background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:rgb 4s linear infinite}
-label{display:block;font-size:.72rem;color:var(--muted);margin:10px 0 4px;letter-spacing:1px;text-transform:uppercase}
-p{font-size:.85rem;color:var(--muted);margin:6px 0}
-ul{margin:8px 0 8px 20px;font-size:.85rem;color:var(--muted)}
+label{display:block;font-size:.72rem;color:#9aa0b5;margin:10px 0 4px;letter-spacing:1px;text-transform:uppercase}
+p{font-size:.85rem;color:#c0c4d6;margin:6px 0}
+ul{margin:8px 0 8px 20px;font-size:.85rem;color:#c0c4d6}
 li{margin:4px 0}
-input,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--input);
-color:var(--text);font-size:.9rem;outline:none}
-input:focus,select:focus{border-color:#00c3ff;box-shadow:0 0 0 3px rgba(0,195,255,.15)}
+input,select{width:100%;padding:10px 12px;border:1px solid #2a2a38;border-radius:10px;background:#1c1c26;
+color:#f2f2f2;font-size:.9rem;outline:none}
+input:focus,select:focus{border-color:#00ffff;box-shadow:0 0 0 3px rgba(0,255,255,.15)}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 button,.btn{cursor:pointer;border:2px solid transparent;border-radius:12px;padding:10px 16px;
-background:linear-gradient(var(--card),var(--card)) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
+background:linear-gradient(#15151d,#15151d) padding-box,var(--rgb) border-box;background-size:100% 100%,300% 100%;
 animation:rgb 4s linear infinite;font-weight:700;letter-spacing:1px;font-size:.78rem;text-transform:uppercase;
-color:var(--text);text-decoration:none;display:inline-block}
-button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
-.console{margin-top:12px;background:var(--input);border:1px solid var(--line);border-radius:12px;height:180px;
-overflow-y:auto;padding:12px;font-family:Consolas,monospace;font-size:.8rem;color:var(--text);white-space:pre-wrap}
+color:#f2f2f2;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.6)}
+.console{margin-top:12px;background:#0d0d12;border:1px solid #2a2a38;border-radius:12px;height:180px;
+overflow-y:auto;padding:12px;font-family:Consolas,monospace;font-size:.8rem;color:#7ee787;white-space:pre-wrap}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:700px){.row{grid-template-columns:1fr}}
-.ok{color:#00a651;font-weight:700}
-.err{color:#e00000;font-weight:700}
+.ok{color:#00e676;font-weight:700}
+.err{color:#ff5252;font-weight:700}
 table{width:100%;border-collapse:collapse;margin:10px 0}
-td,th{padding:8px;border-bottom:1px solid var(--line);font-size:.85rem;text-align:left;vertical-align:top}
+td,th{padding:8px;border-bottom:1px solid #2a2a38;font-size:.85rem;text-align:left;vertical-align:top;color:#c0c4d6}
 .big{font-size:2rem;font-weight:800;letter-spacing:6px}
 `;
 
@@ -207,23 +190,12 @@ function themePage(title, content) {
 <link rel="icon" href="/logo.png">
 <style>${THEME_CSS}</style>
 </head>
-<body data-theme="white">
-<script>
-(function(){var t='white';try{t=localStorage.getItem('waleed-theme')||'white';}catch(e){}
-document.body.setAttribute('data-theme',t);})();
-function setTheme(t){document.body.setAttribute('data-theme',t);try{localStorage.setItem('waleed-theme',t);}catch(e){}}
-</script>
-<div class="themes">
-<button class="t-white" onclick="setTheme('white')" title="White RGB"></button>
-<button class="t-dark" onclick="setTheme('dark')" title="Dark RGB"></button>
-<button class="t-neon" onclick="setTheme('neon')" title="Neon Purple"></button>
-<button class="t-gold" onclick="setTheme('gold')" title="Royal Gold"></button>
-</div>
+<body>
 <div class="wrap">
 <header>
 <img src="/logo.png" class="logo" alt="Waleed Logo">
-<h1>༒︎𝑾𝑨𝑳𝑬𝑬𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 ༒︎</h1>
-<div class="tag">ᴡʜᴀᴛᴀᴘᴘ ꜱʏꜱᴛᴇᴍ ᴄᴏɴᴛʀʟ ᴘɴᴇʟ</div>
+<h1>༒︎ 𝐖 𝐀 𝐋 𝐄 𝐄  𝑫༾︎</h1>
+<div class="tag">ɪ ᴀᴍ  ᴅᴇᴠɪʟ ᴏ ᴍʏ ᴡᴏʀʟᴅ</div>
 </header>
 ${content}
 </div>
@@ -259,9 +231,9 @@ app.get("/api/sessions", (req, res) => {
     res.json(sessions);
 });
 
-// ============ MAIN HOME — WALEED MULTI-THEME MODERN ============
+// ============ MAIN HOME (HTML: DARK RGB + WALEED) ============
 app.get("/", (req, res) => {
-    res.send(themePage("༒︎  𝐖 𝐀 𝐋 𝐄 𝐄 𝐃 ༾︎", `
+    res.send(themePage("༒︎ 𝐖 𝐀 𝐋 𝐄 𝑬 𝐃 ༾︎", `
 <div class="stats">
     <div class="stat"><b id="stMsgs">0</b><span>Total Msgs</span></div>
     <div class="stat"><b id="stSess">0</b><span>Sessions</span></div>
@@ -373,10 +345,7 @@ refresh();
 `));
 });
 
-/* ============================================================
-   ⚠️ PAIRING SYSTEM — 100% ORIGINAL (AAP KE FILE SE HO-BA-HO)
-   Is mein kuch bhi change NAHI kiya gaya
-   ============================================================ */
+// ============ /code — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.get("/code", async (req, res) => {
     const num = req.query.number.replace(/[^0-9]/g, "");
     const userIP = req.userIP;
@@ -425,25 +394,23 @@ app.get("/code", async (req, res) => {
 
             userSessions.set(userIP, sessionId);
 
-            res.send(`
-<html>
-<head><title>Pairing Code</title></head>
-<body>
-<h1>Pairing Code: ${code}</h1>
-<p>Save this code to pair your device</p>
-<h2>To pair your device:</h2>
-<ul>
-<li>Open WhatsApp on your phone</li>
-<li>Go to Settings → Linked Devices → Link a Device</li>
-<li>Enter this pairing code when prompted</li>
-<li>After pairing, start sending messages</li>
-</ul>
-<h2>Your Session ID: ${sessionId}</h2>
-<p>Save this Session ID to manage your tasks</p>
-<a href="/">Go Back to Home</a>
-</body>
-</html>
-            `);
+            res.send(themePage("Pairing Code — WALEED", `
+<div class="card">
+    <h2>Pairing Code</h2>
+    <p class="big ok">${code}</p>
+    <p>Save this code to pair your device</p>
+    <h2>To pair your device:</h2>
+    <ul>
+        <li>Open WhatsApp on your phone</li>
+        <li>Go to Settings → Linked Devices → Link a Device</li>
+        <li>Enter this pairing code when prompted</li>
+        <li>After pairing, start sending messages</li>
+    </ul>
+    <h2>Your Session ID</h2>
+    <p class="big">${sessionId}</p>
+    <p>Save this Session ID to manage your tasks</p>
+    <div class="btnrow"><a class="btn" href="/">Go Back to Home</a></div>
+</div>`));
         }
 
         waClient.ev.on("creds.update", saveCreds);
@@ -473,20 +440,13 @@ app.get("/code", async (req, res) => {
 
     } catch (err) {
         console.error("Error in pairing:", err);
-        res.send(`
-<html>
-<head><title>Error</title></head>
-<body>
-<h1>Error</h1>
-<p>${err.message}</p>
-<a href="/">Go Back</a>
-</body>
-</html>
-`);
+        res.send(themePage("Error — WALEED", `
+<div class="card"><h2 class="err">Error</h2><p>${err.message}</p>
+<div class="btnrow"><a class="btn" href="/">Go Back</a></div></div>`));
     }
 });
 
-// ORIGINAL reconnect logic — unchanged
+// ORIGINAL reconnect logic — UNCHANGED
 async function initializeClient(sessionId, num, sessionPath) {
     try {
         const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
@@ -561,7 +521,7 @@ async function initializeClient(sessionId, num, sessionPath) {
     }
 }
 
-// ============ SEND MESSAGE (original logic) ============
+// ============ SEND MESSAGE — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.post("/send-message", upload.single("messageFile"), async (req, res) => {
     const { target, targetType, delaySec, prefix } = req.body;
     const userIP = req.userIP;
@@ -638,7 +598,7 @@ app.post("/send-message", upload.single("messageFile"), async (req, res) => {
     }
 });
 
-// ORIGINAL message loop — unchanged
+// ORIGINAL message loop — UNCHANGED
 async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, targetType, delaySec, prefix, senderNumber) {
     const clientInfo = activeClients.get(sessionId);
     if (!clientInfo) return;
@@ -771,7 +731,7 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
     }
 }
 
-// ============ SESSION STATUS ============
+// ============ SESSION STATUS — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.get("/session-status", (req, res) => {
     const sessionId = req.query.sessionId;
     if (!sessionId || !activeClients.has(sessionId)) {
@@ -808,7 +768,7 @@ ${clientInfo.tasks && clientInfo.tasks.length > 0 ? `
 <div class="btnrow"><a class="btn" href="/">Go Back</a></div>`));
 });
 
-// ============ TASK LOGS ============
+// ============ TASK LOGS — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.get("/task-logs", (req, res) => {
     const { sessionId, taskId } = req.query;
     if (!sessionId || !activeClients.has(sessionId) || !taskLogs.has(taskId)) {
@@ -860,7 +820,7 @@ app.post("/view-session", (req, res) => {
     res.redirect(`/session-status?sessionId=${sessionId}`);
 });
 
-// ============ STOP SESSION (original logic) ============
+// ============ STOP SESSION — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.post("/stop-session", async (req, res) => {
     const { sessionId } = req.body;
 
@@ -908,7 +868,7 @@ app.post("/stop-session", async (req, res) => {
     }
 });
 
-// ============ STOP TASK (original logic) ============
+// ============ STOP TASK — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.post("/stop-task", async (req, res) => {
     const { sessionId, taskId } = req.body;
 
@@ -954,7 +914,7 @@ app.post("/stop-task", async (req, res) => {
     }
 });
 
-// ============ GET GROUPS (original logic) ============
+// ============ GET GROUPS — ORIGINAL LOGIC, SIRF HTML THEMED ============
 app.get("/get-groups", async (req, res) => {
     const userIP = req.userIP;
 
@@ -1031,7 +991,7 @@ process.on('SIGINT', () => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 WALEED XD 🔥 Server Started on http://localhost:${PORT}`);
+    console.log(`🚀  𝑾 𝐀 𝐋 𝐄 𝐄 𝑫  🔥 Server Started on http://localhost:${PORT}`);
     console.log(`✅ All Systems Integrated Successfully!`);
     console.log(`📊 Dashboard: http://localhost:${PORT}`);
 });
