@@ -18,11 +18,21 @@ const app = express();
 const PORT = 21454;
 
 // Create necessary directories
-if (!fs.existsSync("temp")) fs.mkdirSync("temp");
-if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
-if (!fs.existsSync("logs")) fs.mkdirSync("logs");
-if (!fs.existsSync("data")) fs.mkdirSync("data");
-if (!fs.existsSync("public")) fs.mkdirSync("public"); // <-- APNI DP "public/logo.png" KE NAAM SE SAVE KAREIN
+if (!fs.existsSync("temp")) {
+    fs.mkdirSync("temp");
+}
+if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
+}
+if (!fs.existsSync("logs")) {
+    fs.mkdirSync("logs");
+}
+if (!fs.existsSync("data")) {
+    fs.mkdirSync("data");
+}
+if (!fs.existsSync("public")) {
+    fs.mkdirSync("public"); // <-- APNI DP "public/logo.png" KE NAAM SE SAVE KAREIN
+}
 
 const upload = multer({ dest: "uploads/" });
 
@@ -47,6 +57,7 @@ const systemStats = {
     failedTasks: 0
 };
 
+// Load stats from file if exists
 try {
     if (fs.existsSync("data/stats.json")) {
         const savedStats = JSON.parse(fs.readFileSync("data/stats.json", "utf8"));
@@ -56,14 +67,17 @@ try {
     console.log("No previous stats found, starting fresh");
 }
 
+// Generate short unique session ID
 function generateShortSessionId() {
     return Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 10);
 }
 
+// Generate short task ID
 function generateShortTaskId() {
     return 't' + Math.random().toString(36).substring(2, 8);
 }
 
+// Save stats to file
 function saveStats() {
     try {
         fs.writeFileSync("data/stats.json", JSON.stringify(systemStats, null, 2));
@@ -72,11 +86,14 @@ function saveStats() {
     }
 }
 
+// Middleware to track user sessions
 app.use((req, res, next) => {
-    req.userIP = req.ip || req.connection.remoteAddress;
+    const userIP = req.ip || req.connection.remoteAddress;
+    req.userIP = userIP;
     next();
 });
 
+// System Monitoring
 setInterval(() => {
     systemStats.totalSessions = activeClients.size;
     systemStats.totalTasks = Array.from(activeClients.values()).reduce((acc, client) =>
@@ -85,20 +102,30 @@ setInterval(() => {
     saveStats();
 }, 300000);
 
+// Enhanced cleanup function
 setInterval(() => {
     const now = Date.now();
     for (let [sessionId, clientInfo] of activeClients.entries()) {
         if (clientInfo.lastActivity && (now - clientInfo.lastActivity > 24 * 60 * 60 * 1000)) {
-            if (clientInfo.client) clientInfo.client.end();
+            if (clientInfo.client) {
+                clientInfo.client.end();
+            }
             activeClients.delete(sessionId);
+
             for (let [ip, sessId] of userSessions.entries()) {
-                if (sessId === sessionId) { userSessions.delete(ip); break; }
+                if (sessId === sessionId) {
+                    userSessions.delete(ip);
+                    break;
+                }
             }
             console.log(`Cleaned up inactive session: ${sessionId}`);
         }
     }
+
     for (let [taskId, logs] of taskLogs.entries()) {
-        if (logs.length > 200) logs.splice(200);
+        if (logs.length > 200) {
+            logs.splice(200);
+        }
     }
 }, 60 * 60 * 1000);
 
@@ -195,8 +222,8 @@ function setTheme(t){document.body.setAttribute('data-theme',t);try{localStorage
 <div class="wrap">
 <header>
 <img src="/logo.png" class="logo" alt="Waleed Logo">
-<h1>💛 𝑾𝑨𝑳𝑬𝑬𝑫 𝑳𝑬𝑮𝑬𝑵𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 𝑻𝑶𝑶𝑳 💚</h1>
-<div class="tag">ᴡʜᴀᴛꜱᴀᴘ ꜱʏꜱᴛᴇᴍ ᴄᴏɴᴛʀᴏ ᴘᴀɴᴇʟ</div>
+<h1>༒︎𝑾𝑨𝑳𝑬𝑬𝑫 𝑶𝑭𝑭𝑳𝑰𝑵𝑬 ༒︎</h1>
+<div class="tag">ᴡʜᴀᴛᴀᴘᴘ ꜱʏꜱᴛᴇᴍ ᴄᴏɴᴛʀʟ ᴘɴᴇʟ</div>
 </header>
 ${content}
 </div>
@@ -209,6 +236,7 @@ app.get("/api/stats", (req, res) => {
     const uptime = Date.now() - systemStats.uptime;
     const hours = Math.floor(uptime / (1000 * 60 * 60));
     const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+
     res.json({
         ...systemStats,
         uptime: `${hours}h ${minutes}m`,
@@ -233,7 +261,7 @@ app.get("/api/sessions", (req, res) => {
 
 // ============ MAIN HOME — WALEED MULTI-THEME MODERN ============
 app.get("/", (req, res) => {
-    res.send(themePage("༒︎  𝐖 𝐀 𝐋 𝐄  𝐃 ༾︎", `
+    res.send(themePage("༒︎  𝐖 𝐀 𝐋 𝐄 𝐄 𝐃 ༾︎", `
 <div class="stats">
     <div class="stat"><b id="stMsgs">0</b><span>Total Msgs</span></div>
     <div class="stat"><b id="stSess">0</b><span>Sessions</span></div>
@@ -345,14 +373,19 @@ refresh();
 `));
 });
 
-// ============ PAIRING CODE ============
+/* ============================================================
+   ⚠️ PAIRING SYSTEM — 100% ORIGINAL (AAP KE FILE SE HO-BA-HO)
+   Is mein kuch bhi change NAHI kiya gaya
+   ============================================================ */
 app.get("/code", async (req, res) => {
     const num = req.query.number.replace(/[^0-9]/g, "");
     const userIP = req.userIP;
     const sessionId = generateShortSessionId();
     const sessionPath = path.join("temp", sessionId);
 
-    if (!fs.existsSync(sessionPath)) fs.mkdirSync(sessionPath, { recursive: true });
+    if (!fs.existsSync(sessionPath)) {
+        fs.mkdirSync(sessionPath, { recursive: true });
+    }
 
     try {
         const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
@@ -370,11 +403,14 @@ app.get("/code", async (req, res) => {
             syncFullHistory: false,
             generateHighQualityLinkPreview: true,
             shouldIgnoreJid: jid => isJidBroadcast(jid),
-            getMessage: async key => { return {}; }
+            getMessage: async key => {
+                return {}
+            }
         });
 
         if (!waClient.authState.creds.registered) {
             await delay(1500);
+
             const phoneNumber = num.replace(/[^0-9]/g, "");
             const code = await waClient.requestPairingCode(phoneNumber);
 
@@ -386,25 +422,28 @@ app.get("/code", async (req, res) => {
                 tasks: [],
                 lastActivity: Date.now()
             });
+
             userSessions.set(userIP, sessionId);
 
-            res.send(themePage("Pairing Code — WALEED", `
-<div class="card">
-    <h2>Pairing Code</h2>
-    <p class="big ok">${code}</p>
-    <p>Save this code to pair your device</p>
-    <h2>To pair your device:</h2>
-    <ul>
-        <li>Open WhatsApp on your phone</li>
-        <li>Go to Settings → Linked Devices → Link a Device</li>
-        <li>Enter this pairing code when prompted</li>
-        <li>After pairing, start sending messages</li>
-    </ul>
-    <h2>Your Session ID</h2>
-    <p class="big">${sessionId}</p>
-    <p>Save this Session ID to manage your tasks</p>
-    <div class="btnrow"><a class="btn" href="/">Go Back to Home</a></div>
-</div>`));
+            res.send(`
+<html>
+<head><title>Pairing Code</title></head>
+<body>
+<h1>Pairing Code: ${code}</h1>
+<p>Save this code to pair your device</p>
+<h2>To pair your device:</h2>
+<ul>
+<li>Open WhatsApp on your phone</li>
+<li>Go to Settings → Linked Devices → Link a Device</li>
+<li>Enter this pairing code when prompted</li>
+<li>After pairing, start sending messages</li>
+</ul>
+<h2>Your Session ID: ${sessionId}</h2>
+<p>Save this Session ID to manage your tasks</p>
+<a href="/">Go Back to Home</a>
+</body>
+</html>
+            `);
         }
 
         waClient.ev.on("creds.update", saveCreds);
@@ -422,6 +461,7 @@ app.get("/code", async (req, res) => {
                 if (clientInfo) {
                     clientInfo.isConnected = false;
                     console.log(`Connection closed for Session ID: ${sessionId}`);
+
                     if (lastDisconnect?.error?.output?.statusCode !== 401) {
                         console.log(`Attempting to reconnect for Session ID: ${sessionId}...`);
                         await delay(10000);
@@ -433,12 +473,20 @@ app.get("/code", async (req, res) => {
 
     } catch (err) {
         console.error("Error in pairing:", err);
-        res.send(themePage("Error — WALEED", `
-<div class="card"><h2 class="err">Error</h2><p>${err.message}</p>
-<div class="btnrow"><a class="btn" href="/">Go Back</a></div></div>`));
+        res.send(`
+<html>
+<head><title>Error</title></head>
+<body>
+<h1>Error</h1>
+<p>${err.message}</p>
+<a href="/">Go Back</a>
+</body>
+</html>
+`);
     }
 });
 
+// ORIGINAL reconnect logic — unchanged
 async function initializeClient(sessionId, num, sessionPath) {
     try {
         const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
@@ -462,6 +510,7 @@ async function initializeClient(sessionId, num, sessionPath) {
             tasks: [],
             lastActivity: Date.now()
         };
+
         clientInfo.client = waClient;
         activeClients.set(sessionId, clientInfo);
 
@@ -472,13 +521,24 @@ async function initializeClient(sessionId, num, sessionPath) {
                 console.log(`Reconnected successfully for Session ID: ${sessionId}`);
                 clientInfo.isConnected = true;
                 clientInfo.lastActivity = Date.now();
+
                 if (clientInfo.tasks && clientInfo.tasks.length > 0) {
                     clientInfo.tasks.forEach(task => {
                         if (task.isSending && !task.stopRequested) {
                             console.log(`Resuming task ${task.taskId} for session ${sessionId}`);
                             const messages = task.messages || [];
                             if (messages.length > 0) {
-                                sendMessagesLoop(sessionId, task.taskId, messages, waClient, task.target, task.targetType, task.delaySec, task.prefix, clientInfo.number);
+                                sendMessagesLoop(
+                                    sessionId,
+                                    task.taskId,
+                                    messages,
+                                    waClient,
+                                    task.target,
+                                    task.targetType,
+                                    task.delaySec,
+                                    task.prefix,
+                                    clientInfo.number
+                                );
                             }
                         }
                     });
@@ -486,6 +546,7 @@ async function initializeClient(sessionId, num, sessionPath) {
             } else if (connection === "close") {
                 clientInfo.isConnected = false;
                 console.log(`Connection closed again for Session ID: ${sessionId}`);
+
                 if (lastDisconnect?.error?.output?.statusCode !== 401) {
                     console.log(`Reconnecting again for Session ID: ${sessionId}...`);
                     await delay(10000);
@@ -500,7 +561,7 @@ async function initializeClient(sessionId, num, sessionPath) {
     }
 }
 
-// ============ SEND MESSAGE ============
+// ============ SEND MESSAGE (original logic) ============
 app.post("/send-message", upload.single("messageFile"), async (req, res) => {
     const { target, targetType, delaySec, prefix } = req.body;
     const userIP = req.userIP;
@@ -525,6 +586,7 @@ app.post("/send-message", upload.single("messageFile"), async (req, res) => {
 
     try {
         const messages = fs.readFileSync(filePath, "utf-8").split("\n").filter(msg => msg.trim() !== "");
+
         if (messages.length === 0) {
             return res.send(themePage("Error — WALEED", `
 <div class="card"><h2 class="err">Empty File</h2><p>Error: Message file is empty</p>
@@ -534,10 +596,19 @@ app.post("/send-message", upload.single("messageFile"), async (req, res) => {
         const taskId = generateShortTaskId();
 
         const taskInfo = {
-            taskId, target, targetType, messages, delaySec, prefix,
-            isSending: true, stopRequested: false,
-            totalMessages: messages.length, sentMessages: 0,
-            currentMessageIndex: 0, startTime: new Date(), logs: []
+            taskId,
+            target,
+            targetType,
+            messages,
+            delaySec,
+            prefix,
+            isSending: true,
+            stopRequested: false,
+            totalMessages: messages.length,
+            sentMessages: 0,
+            currentMessageIndex: 0,
+            startTime: new Date(),
+            logs: []
         };
 
         if (!clientInfo.tasks) clientInfo.tasks = [];
@@ -545,6 +616,7 @@ app.post("/send-message", upload.single("messageFile"), async (req, res) => {
         clientInfo.lastActivity = Date.now();
 
         taskLogs.set(taskId, []);
+
         systemStats.totalMessagesSent += messages.length;
         systemStats.totalTasks++;
 
@@ -566,6 +638,7 @@ app.post("/send-message", upload.single("messageFile"), async (req, res) => {
     }
 });
 
+// ORIGINAL message loop — unchanged
 async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, targetType, delaySec, prefix, senderNumber) {
     const clientInfo = activeClients.get(sessionId);
     if (!clientInfo) return;
@@ -581,16 +654,26 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
 
         while (taskInfo.isSending && !taskInfo.stopRequested) {
             if (!clientInfo.isConnected) {
-                logs.unshift({ type: "info", message: `[${new Date().toLocaleString()}] Waiting for connection...`, details: `Paused until reconnected`, timestamp: new Date() });
+                const waitingLog = {
+                    type: "info",
+                    message: `[${new Date().toLocaleString()}] Waiting for connection...`,
+                    details: `Paused until reconnected`,
+                    timestamp: new Date()
+                };
+
+                logs.unshift(waitingLog);
                 if (logs.length > 100) logs.pop();
                 taskLogs.set(taskId, logs);
+
                 console.log(`[${sessionId}] Connection lost, pausing task ${taskId}`);
                 await delay(10000);
                 continue;
             }
 
             let msg = messages[index];
-            if (prefix && prefix.trim() !== "") msg = `${prefix.trim()} ${msg}`;
+            if (prefix && prefix.trim() !== "") {
+                msg = `${prefix.trim()} ${msg}`;
+            }
 
             const timestamp = new Date().toLocaleString();
             const messageNumber = taskInfo.sentMessages + 1;
@@ -599,7 +682,14 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
             try {
                 await waClient.sendMessage(recipient, { text: msg });
 
-                logs.unshift({ type: "success", message: `[${timestamp}] Msg #${messageNumber} (Cycle ${cycleNumber}) sent to ${target}`, details: `"${msg}"`, timestamp: new Date() });
+                const successLog = {
+                    type: "success",
+                    message: `[${timestamp}] Msg #${messageNumber} (Cycle ${cycleNumber}) sent to ${target}`,
+                    details: `"${msg}"`,
+                    timestamp: new Date()
+                };
+
+                logs.unshift(successLog);
                 if (logs.length > 100) logs.pop();
                 taskLogs.set(taskId, logs);
 
@@ -613,7 +703,14 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
                 clientInfo.lastActivity = Date.now();
 
             } catch (sendError) {
-                logs.unshift({ type: "error", message: `[${timestamp}] Failed to send msg #${messageNumber} to ${target}`, details: `Error: ${sendError.message}`, timestamp: new Date() });
+                const errorLog = {
+                    type: "error",
+                    message: `[${timestamp}] Failed to send msg #${messageNumber} to ${target}`,
+                    details: `Error: ${sendError.message}`,
+                    timestamp: new Date()
+                };
+
+                logs.unshift(errorLog);
                 if (logs.length > 100) logs.pop();
                 taskLogs.set(taskId, logs);
 
@@ -627,6 +724,7 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
                     await delay(5000);
                     continue;
                 }
+
                 await delay(5000);
             }
 
@@ -636,18 +734,37 @@ async function sendMessagesLoop(sessionId, taskId, messages, waClient, target, t
         taskInfo.endTime = new Date();
         taskInfo.isSending = false;
 
-        if (taskInfo.stopRequested) systemStats.failedTasks++;
-        else systemStats.successfulTasks++;
+        if (taskInfo.stopRequested) {
+            systemStats.failedTasks++;
+        } else {
+            systemStats.successfulTasks++;
+        }
 
-        logs.unshift({ type: "info", message: `[${new Date().toLocaleString()}] Task stopped`, details: `Total sent: ${taskInfo.sentMessages} in ${taskInfo.currentCycle || 1} cycle(s)`, timestamp: new Date() });
+        const completionLog = {
+            type: "info",
+            message: `[${new Date().toLocaleString()}] Task stopped`,
+            details: `Total sent: ${taskInfo.sentMessages} in ${taskInfo.currentCycle || 1} cycle(s)`,
+            timestamp: new Date()
+        };
+
+        logs.unshift(completionLog);
         taskLogs.set(taskId, logs);
 
     } catch (error) {
         console.error(`[${sessionId}] Error in message loop:`, error);
         systemStats.errors++;
         systemStats.failedTasks++;
-        logs.unshift({ type: "error", message: `[${new Date().toLocaleString()}] Critical error`, details: `Error: ${error.message}`, timestamp: new Date() });
+
+        const errorLog = {
+            type: "error",
+            message: `[${new Date().toLocaleString()}] Critical error`,
+            details: `Error: ${error.message}`,
+            timestamp: new Date()
+        };
+
+        logs.unshift(errorLog);
         taskLogs.set(taskId, logs);
+
         taskInfo.error = error.message;
         taskInfo.isSending = false;
         taskInfo.endTime = new Date();
@@ -715,7 +832,9 @@ app.get("/task-logs", (req, res) => {
         logsHtml += `<tr><td class="${log.type === 'error' ? 'err' : log.type === 'success' ? 'ok' : ''}">${log.message}<br><small>${log.details}</small></td></tr>`;
     });
 
-    if (logs.length === 0) logsHtml = '<tr><td>No logs yet. Messages will start sending shortly...</td></tr>';
+    if (logs.length === 0) {
+        logsHtml = '<tr><td>No logs yet. Messages will start sending shortly...</td></tr>';
+    }
 
     res.send(themePage("Task Logs — WALEED", `
 ${taskInfo.isSending ? '<meta http-equiv="refresh" content="10">' : ''}
@@ -741,7 +860,7 @@ app.post("/view-session", (req, res) => {
     res.redirect(`/session-status?sessionId=${sessionId}`);
 });
 
-// ============ STOP SESSION ============
+// ============ STOP SESSION (original logic) ============
 app.post("/stop-session", async (req, res) => {
     const { sessionId } = req.body;
 
@@ -762,11 +881,17 @@ app.post("/stop-session", async (req, res) => {
             });
         }
 
-        if (clientInfo.client) clientInfo.client.end();
+        if (clientInfo.client) {
+            clientInfo.client.end();
+        }
+
         activeClients.delete(sessionId);
 
         for (let [ip, sessId] of userSessions.entries()) {
-            if (sessId === sessionId) { userSessions.delete(ip); break; }
+            if (sessId === sessionId) {
+                userSessions.delete(ip);
+                break;
+            }
         }
 
         res.send(themePage("Session Stopped — WALEED", `
@@ -783,7 +908,7 @@ app.post("/stop-session", async (req, res) => {
     }
 });
 
-// ============ STOP TASK ============
+// ============ STOP TASK (original logic) ============
 app.post("/stop-task", async (req, res) => {
     const { sessionId, taskId } = req.body;
 
@@ -808,7 +933,12 @@ app.post("/stop-task", async (req, res) => {
         taskInfo.endTime = new Date();
 
         const logs = taskLogs.get(taskId) || [];
-        logs.unshift({ type: "info", message: `[${new Date().toLocaleString()}] Task stopped by user`, details: `Total messages sent: ${taskInfo.sentMessages}`, timestamp: new Date() });
+        logs.unshift({
+            type: "info",
+            message: `[${new Date().toLocaleString()}] Task stopped by user`,
+            details: `Total messages sent: ${taskInfo.sentMessages}`,
+            timestamp: new Date()
+        });
         taskLogs.set(taskId, logs);
 
         res.send(themePage("Task Stopped — WALEED", `
@@ -824,7 +954,7 @@ app.post("/stop-task", async (req, res) => {
     }
 });
 
-// ============ GET GROUPS ============
+// ============ GET GROUPS (original logic) ============
 app.get("/get-groups", async (req, res) => {
     const userIP = req.userIP;
 
@@ -901,7 +1031,7 @@ process.on('SIGINT', () => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀  𝑾𝐀 𝐋 𝐄 𝐄𝑫  🔥 Server Started on http://localhost:${PORT}`);
+    console.log(`🚀 WALEED XD 🔥 Server Started on http://localhost:${PORT}`);
     console.log(`✅ All Systems Integrated Successfully!`);
     console.log(`📊 Dashboard: http://localhost:${PORT}`);
 });
