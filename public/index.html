@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waleed · WhatsApp Server</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ============================================================
+           DARK RGB THEME – WALEED EDITION
+           ============================================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0b12;
+            color: #f0f0ff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            padding: 20px 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* RGB animated background with deep dark base */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 15% 30%, rgba(255, 0, 80, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 85% 70%, rgba(0, 200, 255, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(200, 0, 255, 0.15) 0%, transparent 40%),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 6px);
+            pointer-events: none;
+            z-index: 0;
+            animation: rgbBreath 12s infinite alternate ease-in-out;
+        }
+
+        @keyframes rgbBreath {
+            0% { opacity: 0.7; filter: hue-rotate(0deg); }
+            50% { opacity: 1; filter: hue-rotate(15deg); }
+            100% { opacity: 0.7; filter: hue-rotate(-10deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.6s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ----- cards with RGB glow & deep dark glass ----- */
+        .box {
+            background: rgba(12, 12, 22, 0.75);
+            backdrop-filter: blur(14px) saturate(200%);
+            -webkit-backdrop-filter: blur(14px) saturate(200%);
+            padding: 32px 28px;
+            border-radius: 28px;
+            margin: 28px auto;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.7),
+                0 0 0 1px rgba(255, 40, 140, 0.15),
+                inset 0 0 40px rgba(255, 0, 150, 0.05);
+            transition: all 0.25s ease;
+            animation: slideGlow 0.5s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,0,180,0.03), transparent, rgba(0,200,255,0.03), transparent);
+            animation: rotateGlow 18s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .box:hover {
+            transform: translateY(-6px) scale(1.005);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.8),
+                0 0 0 2px rgba(255, 60, 180, 0.25),
+                0 0 50px rgba(255, 0, 200, 0.2);
+            border-color: rgba(255, 100, 200, 0.2);
+        }
+
+        @keyframes slideGlow {
+            from { opacity: 0; transform: scale(0.96) translateY(18px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+            text-shadow:
+                0 0 12px rgba(255, 40, 180, 0.5),
+                0 0 30px rgba(0, 180, 255, 0.3),
+                0 0 60px rgba(200, 0, 255, 0.2);
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ff4d94, #b366ff, #4dc3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 50, 180, 0.3);
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #f0f0ff;
+            text-shadow: 0 0 20px rgba(200, 100, 255, 0.3);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #e0e0ff;
+        }
+
+        /* ----- inputs & selects (dark rgb) ----- */
+        input, select, textarea {
+            display: block;
+            margin: 18px auto;
+            padding: 16px 20px;
+            font-size: 1rem;
+            width: 100%;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 80, 200, 0.2);
+            background: rgba(8, 8, 20, 0.7);
+            color: #f5f5ff;
+            box-shadow: inset 0 4px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255, 0, 200, 0.05);
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff3b9e;
+            background: rgba(18, 10, 30, 0.85);
+            box-shadow: 0 0 25px rgba(255, 0, 180, 0.3), inset 0 0 20px rgba(255, 0, 200, 0.1);
+            transform: scale(1.01);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(200, 180, 255, 0.5);
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----- radio group (rgb neon) ----- */
+        .radio-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px auto;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            background: rgba(20, 12, 40, 0.6);
+            border: 1px solid rgba(255, 60, 180, 0.2);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+        }
+
+        .radio-option:hover {
+            border-color: #ff3b9e;
+            background: rgba(60, 20, 80, 0.5);
+            box-shadow: 0 0 25px rgba(255, 0, 200, 0.15);
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+            transform: scale(1.3);
+            accent-color: #ff3b9e;
+            filter: drop-shadow(0 0 6px #ff3b9e);
+        }
+
+        .radio-option label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #d0d0ff;
+        }
+
+        /* ----- buttons (RGB neon) ----- */
+        button, a.action-btn {
+            background: linear-gradient(135deg, #cc2b7a, #a033ff, #2b7aff);
+            background-size: 200% 200%;
+            animation: rgbBtnShift 4s ease infinite alternate;
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 16px 28px;
+            border-radius: 60px;
+            margin: 18px auto;
+            display: block;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 30px rgba(200, 0, 200, 0.3);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        @keyframes rgbBtnShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        button:hover:not(:disabled), a.action-btn:hover {
+            transform: scale(1.04) translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 0, 200, 0.5), 0 0 60px rgba(100, 0, 255, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        /* badge status (rgb) */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: rgba(20, 12, 40, 0.7);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 0 20px rgba(255, 0, 200, 0.1);
+            animation: badgeGlow 2.5s infinite alternate;
+        }
+
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 0, 180, 0.2); }
+            100% { box-shadow: 0 0 30px rgba(100, 0, 255, 0.4); }
+        }
+
+        .status-connected {
+            color: #7affb0;
+            border-color: #7affb0;
+            text-shadow: 0 0 20px #7affb0;
+        }
+        .status-disconnected {
+            color: #ff7a7a;
+            border-color: #ff7a7a;
+            text-shadow: 0 0 20px #ff7a7a;
+        }
+        .status-running {
+            color: #7ac0ff;
+            border-color: #7ac0ff;
+            text-shadow: 0 0 20px #7ac0ff;
+        }
+        .status-stopped {
+            color: #ff7a7a;
+            border-color: #ff7a7a;
+            text-shadow: 0 0 20px #ff7a7a;
+        }
+
+        .uptime-display {
+            background: rgba(10, 8, 25, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 14px 28px;
+            border-radius: 60px;
+            margin: 20px auto;
+            border: 1px solid rgba(255, 60, 180, 0.15);
+            display: inline-block;
+            font-weight: 500;
+            color: #c0c0ff;
+            box-shadow: 0 0 40px rgba(200, 0, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .session-item, .task-item {
+            background: rgba(12, 10, 30, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 22px;
+            border-radius: 20px;
+            margin: 18px 0;
+            border: 1px solid rgba(255, 60, 180, 0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .session-item:hover, .task-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 60, 220, 0.25);
+            box-shadow: 0 12px 50px rgba(200, 0, 200, 0.15);
+        }
+
+        /* modal (rgb dark) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(16px);
+            animation: modalFade 0.25s ease-out;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: rgba(10, 8, 25, 0.95);
+            backdrop-filter: blur(20px);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 60, 200, 0.2);
+            max-width: 500px;
+            width: 92%;
+            box-shadow: 0 30px 80px rgba(200, 0, 200, 0.2);
+            animation: modalSlide 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: scale(0.92) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-content.large-modal {
+            max-width: 850px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .modal-buttons button {
+            width: auto;
+            flex: 1;
+            min-width: 120px;
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            margin: 0;
+            border-radius: 60px;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff2a5e, #cc1f4a);
+            box-shadow: 0 8px 30px rgba(255, 0, 80, 0.4);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 12px 40px rgba(255, 0, 80, 0.6);
+        }
+
+        .btn-cancel, .btn-back {
+            background: linear-gradient(135deg, #6a3b9a, #3b6bff);
+            box-shadow: 0 8px 30px rgba(100, 0, 255, 0.3);
+        }
+
+        /* alerts */
+        .alert {
+            padding: 16px 24px;
+            border-radius: 60px;
+            margin: 16px 0;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .alert-success { background: rgba(0, 255, 150, 0.12); border-color: #7affb0; color: #7affb0; }
+        .alert-error { background: rgba(255, 50, 80, 0.12); border-color: #ff7a7a; color: #ff7a7a; }
+        .alert-info { background: rgba(50, 150, 255, 0.12); border-color: #7ac0ff; color: #7ac0ff; }
+
+        /* links */
+        a {
+            color: #b080ff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 60px;
+            background: rgba(255, 40, 200, 0.05);
+            border: 1px solid rgba(255, 60, 200, 0.08);
+            transition: all 0.2s ease;
+            display: inline-block;
+            margin: 6px 4px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+        }
+
+        a:hover {
+            background: rgba(255, 40, 200, 0.12);
+            border-color: #ff3b9e;
+            box-shadow: 0 0 30px rgba(255, 0, 200, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .hidden { display: none !important; }
+
+        /* responsive */
+        @media (max-width: 720px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .box { padding: 22px 16px; }
+            .radio-group { gap: 12px; }
+            button { max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 12px 6px; }
+            .modal-content { padding: 22px; }
+            .modal-buttons { flex-direction: column; }
+            .modal-buttons button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- dynamic content -->
+    </div>
+
+    <script>
+        // ============================================================
+        // WALEED · full original logic + dark rgb theme
+        // ============================================================
+
+        let currentUser = null;
+        let isAdmin = false;
+        let uptimeInterval = null;
+        let modalCallbacks = {};
+        let statusUpdateInterval = null;
+        let logsUpdateInterval = null;
+
+        function setButtonLoading(button, isLoading) {
+            if (!button) return;
+            if (isLoading) {
+                button.classList.add('loading');
+                button.disabled = true;
+                let spinner = button.querySelector('.fa-spinner');
+                if (!spinner) {
+                    const originalIcon = button.querySelector('i.fas');
+                    if (originalIcon && !originalIcon.classList.contains('fa-spinner')) {
+                        originalIcon.style.display = 'none';
+                    }
+                    spinner = document.createElement('i');
+                    spinner.className = 'fas fa-spinner fa-spin';
+                    button.prepend(spinner);
+                }
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+                const spinner = button.querySelector('.fa-spinner');
+                if (spinner) spinner.remove();
+                const originalIcon = button.querySelector('i.fas');
+                if (originalIcon) originalIcon.style.display = '';
+            }
+        }
+
+        function init() {
+            checkAuth();
+            loadPage();
+            startUptimeUpdater();
+        }
+
+        function checkAuth() {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'adminToken' && value === 'admin_authenticated') {
+                    isAdmin = true;
+                    return;
+                }
+                if (name === 'sessionToken' && value) {
+                    currentUser = { token: value };
+                    return;
+                }
+            }
+        }
+
+        function loadPage() {
+            const path = window.location.pathname;
+            const params = new URLSearchParams(window.location.search);
+
+            if (path === '/' || path === '/login') showLoginPage();
+            else if (path === '/signup') showSignupPage();
+            else if (path === '/admin-login') showAdminLoginPage();
+            else if (path === '/dashboard') showDashboard();
+            else if (path === '/admin-dashboard') showAdminDashboard();
+            else if (path === '/session-status') {
+                const sessionId = params.get('sessionId');
+                showSessionStatus(sessionId);
+            } else if (path === '/task-logs') {
+                const sessionId = params.get('sessionId');
+                const taskId = params.get('taskId');
+                showTaskLogs(sessionId, taskId);
+            } else {
+                showLoginPage();
+            }
+        }
+
+        function startUptimeUpdater() {
+            if (uptimeInterval) clearInterval(uptimeInterval);
+            updateUptime();
+            uptimeInterval = setInterval(() => updateUptime(), 30000);
+        }
+
+        // ---------- PAGE RENDERERS ----------
+        function showLoginPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-lock"></i> WhatsApp · Waleed</h1>
+                <div class="box" style="max-width:520px;">
+                    <h2 style="text-align:center;">User Login</h2>
+                    <div id="login-alert"></div>
+                    <form onsubmit="handleLogin(event)">
+                        <input type="text" id="username" placeholder="Username" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="submit"><i class="fas fa-rocket"></i> Login</button>
+                    </form>
+                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px;">
+                        <span style="color:#aaa;font-size:0.9rem;">New user?</span>
+                        <a href="/signup" onclick="event.preventDefault(); showSignupPage();" class="action-btn" style="display:inline-block;padding:8px 18px;font-size:0.8rem;width:auto;">
+                            <i class="fas fa-user-plus"></i> Sign Up
+                        </a>
+                        <a href="/admin-login" onclick="event.preventDefault(); showAdminLoginPage();" class="action-btn" style="display:inline-block;padding:8px 18px;font-size:0.8rem;width:auto;">
+                            <i class="fas fa-user-shield"></i> Admin
+                        </a>
+                    </div>
+                </div>
+            `;
+            updateUptime();
+        }
+
+        function showSignupPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-user-plus"></i> Create Account</h1>
+                <div class="box" style="max-width:520px;">
+                    <h2 style="text-align:center;">Signup</h2>
+                    <div id="signup-alert"></div>
+                    <form onsubmit="handleSignup(event)">
+                        <input type="text" id="username" placeholder="Username" required>
+                        <input type="email" id="email" placeholder="Email" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="submit"><i class="fas fa-rocket"></i> Create Account</button>
+                    </form>
+                    <p style="margin-top:20px;text-align:center;">Already have an account? <a href="/login" onclick="event.preventDefault(); showLoginPage();" style="display:inline;">Login</a></p>
+                </div>
+            `;
+            updateUptime();
+        }
+
+        function showAdminLoginPage() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-user-shield"></i> Admin Portal</h1>
+                <div class="box" style="max-width:520px;">
+                    <h2 style="text-align:center;">Admin Login</h2>
+                    <div id="admin-login-alert"></div>
+                    <form onsubmit="handleAdminLogin(event)">
+                        <input type="text" id="username" placeholder="Admin Username" required>
+                        <input type="password" id="password" placeholder="Admin Password" required>
+                        <button type="submit"><i class="fas fa-shield-alt"></i> Admin Login</button>
+                    </form>
+                    <p style="margin-top:20px;text-align:center;"><a href="/login" onclick="event.preventDefault(); showLoginPage();" style="display:inline;"><i class="fas fa-user"></i> User Login</a></p>
+                </div>
+            `;
+            updateUptime();
+        }
+
+        // ---------- AUTH HANDLERS ----------
+        async function handleLogin(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            setButtonLoading(button, true);
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    showAlert('login-alert', data.error, 'error');
+                    setButtonLoading(button, false);
+                }
+            } catch (error) {
+                showAlert('login-alert', 'Error: ' + error.message, 'error');
+                setButtonLoading(button, false);
+            }
+        }
+
+        async function handleSignup(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            setButtonLoading(button, true);
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    showAlert('signup-alert', data.error, 'error');
+                    setButtonLoading(button, false);
+                }
+            } catch (error) {
+                showAlert('signup-alert', 'Error: ' + error.message, 'error');
+                setButtonLoading(button, false);
+            }
+        }
+
+        async function handleAdminLogin(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            setButtonLoading(button, true);
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('/admin-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    showAlert('admin-login-alert', data.error, 'error');
+                    setButtonLoading(button, false);
+                }
+            } catch (error) {
+                showAlert('admin-login-alert', 'Error: ' + error.message, 'error');
+                setButtonLoading(button, false);
+            }
+        }
+
+        // ---------- PAIRING / SEND ----------
+        async function handleGeneratePairingCode(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            setButtonLoading(button, true);
+            const number = document.getElementById('phone-number').value;
+            try {
+                const response = await fetch('/generate-pairing-code', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('pairing-result').innerHTML = `
+                        <div class="alert alert-success">
+                            <h3><i class="fas fa-key"></i> Your Pairing Code:</h3>
+                            <h1 style="font-size:48px;letter-spacing:5px;margin:20px 0;">${data.code}</h1>
+                            <p><strong>Session ID:</strong> <span style="font-family:monospace;">${data.sessionId}</span></p>
+                            <p>Enter this code in WhatsApp to link.</p>
+                        </div>
+                    `;
+                    showAlert('pairing-alert', 'Pairing code generated!', 'success');
+                    setTimeout(() => { loadUserSessions(); loadPhoneNumbers(); }, 2000);
+                } else {
+                    showAlert('pairing-alert', data.error, 'error');
+                }
+                setButtonLoading(button, false);
+            } catch (error) {
+                showAlert('pairing-alert', 'Error: ' + error.message, 'error');
+                setButtonLoading(button, false);
+            }
+        }
+
+        function toggleFileInputType() {
+            const sendType = document.querySelector('input[name="sendType"]:checked').value;
+            const fileInput = document.getElementById('messageFile');
+            const fileLabel = document.querySelector('label[for="messageFile"]');
+            if (sendType === 'image') {
+                fileInput.accept = 'image/*';
+                if (fileLabel) fileLabel.textContent = 'Upload Image:';
+            } else {
+                fileInput.accept = '.txt';
+                if (fileLabel) fileLabel.textContent = 'Upload Message File (.txt):';
+            }
+        }
+
+        async function handleSendMessage(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            setButtonLoading(button, true);
+            const sendType = document.querySelector('input[name="sendType"]:checked').value;
+            const formData = new FormData();
+            formData.append('selectedSession', document.getElementById('selected-session-send').value);
+            formData.append('target', document.getElementById('target').value);
+            formData.append('targetType', document.getElementById('targetType').value);
+            formData.append('delaySec', document.getElementById('delaySec').value);
+            formData.append('prefix', document.getElementById('prefix').value);
+            let endpoint = '/send-message';
+            if (sendType === 'image') {
+                formData.append('imageFile', document.getElementById('messageFile').files[0]);
+                endpoint = '/send-image';
+            } else {
+                formData.append('messageFile', document.getElementById('messageFile').files[0]);
+            }
+            try {
+                const response = await fetch(endpoint, { method: 'POST', body: formData });
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    showAlert('send-message-alert', data.error, 'error');
+                    setButtonLoading(button, false);
+                }
+            } catch (error) {
+                showAlert('send-message-alert', 'Error: ' + error.message, 'error');
+                setButtonLoading(button, false);
+            }
+        }
+
+        // ---------- LOAD SESSIONS / NUMBERS ----------
+        async function loadUserSessions() {
+            try {
+                const response = await fetch('/api/get-numbers');
+                const numbers = await response.json();
+                const container = document.getElementById('user-sessions');
+                if (!container) return;
+                if (numbers.length === 0) {
+                    container.innerHTML = '<p style="color:#aab;">No active sessions. Generate a pairing code to start.</p>';
+                    return;
+                }
+                let html = '';
+                numbers.forEach(item => {
+                    item.sessions.forEach(session => {
+                        html += `
+                            <div class="session-item">
+                                <h3><i class="fas fa-mobile-alt"></i> WhatsApp: ${item.number}</h3>
+                                <p><strong>Session ID:</strong> <span style="font-family:monospace;font-size:0.85rem;">${session.sessionId}</span></p>
+                                <p><strong>Status:</strong> <span class="status-badge ${session.isConnected ? 'status-connected' : 'status-disconnected'}">
+                                    ${session.isConnected ? '<i class="fas fa-check-circle"></i> Connected' : '<i class="fas fa-times-circle"></i> Disconnected'}
+                                </span></p>
+                                <p><strong><i class="fas fa-tasks"></i> Running Tasks:</strong> <span style="color:#7ac0ff;font-weight:bold;">${session.runningTasksCount || 0}</span></p>
+                                ${session.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${session.createdAtFormatted}</p>` : ''}
+                                <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+                                    <a href="#" onclick="event.preventDefault(); showSessionStatus('${session.sessionId}');"><i class="fas fa-chart-line"></i> Status</a>
+                                    <a href="#" onclick="event.preventDefault(); confirmStopSession('${session.sessionId}');" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);border-color:#ff2a5e;"><i class="fas fa-stop-circle"></i> Stop</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+                container.innerHTML = html;
+            } catch (error) {
+                const container = document.getElementById('user-sessions');
+                if (container) container.innerHTML = '<p style="color:#ff7a7a;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        async function loadPhoneNumbers() {
+            try {
+                const response = await fetch('/api/get-numbers');
+                const numbers = await response.json();
+                const selectSend = document.getElementById('phone-number-select');
+                const selectGroups = document.getElementById('phone-number-select-groups');
+                if (selectSend) {
+                    selectSend.innerHTML = '<option value="">-- Select Phone Number --</option>';
+                    numbers.forEach(item => {
+                        selectSend.innerHTML += `<option value="${item.number}">${item.number}</option>`;
+                    });
+                }
+                if (selectGroups) {
+                    selectGroups.innerHTML = '<option value="">-- Select Phone Number --</option>';
+                    numbers.forEach(item => {
+                        selectGroups.innerHTML += `<option value="${item.number}">${item.number}</option>`;
+                    });
+                }
+            } catch (error) { console.error('Error loading phone numbers:', error); }
+        }
+
+        async function loadSessionsForSending(phoneNumber) {
+            if (!phoneNumber) {
+                document.getElementById('session-selection-send').classList.add('hidden');
+                document.getElementById('send-message-form').classList.add('hidden');
+                return;
+            }
+            try {
+                const response = await fetch('/api/get-numbers');
+                const numbers = await response.json();
+                const selectedNumber = numbers.find(item => item.number === phoneNumber);
+                const sessionSelect = document.getElementById('session-select-send');
+                sessionSelect.innerHTML = '<option value="">-- Select Session --</option>';
+                if (selectedNumber && selectedNumber.sessions) {
+                    selectedNumber.sessions.forEach(session => {
+                        const statusText = session.isConnected ? 'Connected' : 'Disconnected';
+                        sessionSelect.innerHTML += `<option value="${session.sessionId}">${session.sessionId} (${statusText})</option>`;
+                    });
+                }
+                document.getElementById('session-selection-send').classList.remove('hidden');
+            } catch (error) { console.error(error); }
+        }
+
+        function showSendForm() {
+            const sessionId = document.getElementById('session-select-send').value;
+            if (sessionId) {
+                document.getElementById('selected-session-send').value = sessionId;
+                document.getElementById('send-message-form').classList.remove('hidden');
+            } else {
+                document.getElementById('send-message-form').classList.add('hidden');
+            }
+        }
+
+        async function loadSessionsForGroups(phoneNumber) {
+            if (!phoneNumber) {
+                document.getElementById('session-selection-groups').classList.add('hidden');
+                document.getElementById('show-groups-button').classList.add('hidden');
+                return;
+            }
+            try {
+                const response = await fetch('/api/get-numbers');
+                const numbers = await response.json();
+                const selectedNumber = numbers.find(item => item.number === phoneNumber);
+                const sessionSelect = document.getElementById('session-select-groups');
+                sessionSelect.innerHTML = '<option value="">-- Select Session --</option>';
+                if (selectedNumber && selectedNumber.sessions) {
+                    selectedNumber.sessions.forEach(session => {
+                        const statusText = session.isConnected ? 'Connected' : 'Disconnected';
+                        sessionSelect.innerHTML += `<option value="${session.sessionId}">${session.sessionId} (${statusText})</option>`;
+                    });
+                }
+                document.getElementById('session-selection-groups').classList.remove('hidden');
+            } catch (error) { console.error(error); }
+        }
+
+        function enableShowGroupsButton() {
+            const sessionId = document.getElementById('session-select-groups').value;
+            if (sessionId) {
+                document.getElementById('selected-session-groups').value = sessionId;
+                document.getElementById('show-groups-button').classList.remove('hidden');
+            } else {
+                document.getElementById('show-groups-button').classList.add('hidden');
+            }
+        }
+
+        async function showGroups() {
+            const sessionId = document.getElementById('selected-session-groups').value;
+            if (!sessionId) { alert('Select a session first'); return; }
+            try {
+                const response = await fetch(`/get-groups?sessionId=${sessionId}`);
+                const data = await response.json();
+                if (data.success) {
+                    let groupsHtml = `<h3 style="margin-top:20px;"><i class="fas fa-users"></i> Groups for ${data.number}</h3>`;
+                    if (data.groups && data.groups.length > 0) {
+                        groupsHtml += '<div style="max-height:400px;overflow-y:auto;margin-top:15px;">';
+                        data.groups.forEach(group => {
+                            groupsHtml += `
+                                <div style="background:rgba(255,40,200,0.05);padding:14px;margin:10px 0;border-radius:16px;border-left:4px solid #ff3b9e;">
+                                    <p><strong>${group.index}. ${group.subject}</strong></p>
+                                    <p style="font-family:monospace;font-size:0.8rem;color:#b0b0ff;">ID: ${group.groupId}</p>
+                                    <p style="font-size:0.9rem;"><i class="fas fa-users"></i> ${group.participantsCount} members</p>
+                                    ${group.creation ? `<p style="font-size:0.8rem;color:#aaa;"><i class="fas fa-calendar"></i> Created: ${group.creation}</p>` : ''}
+                                </div>
+                            `;
+                        });
+                        groupsHtml += '</div>';
+                    } else {
+                        groupsHtml += '<p style="color:#aab;">No groups found.</p>';
+                    }
+                    document.getElementById('groups-list').innerHTML = groupsHtml;
+                } else {
+                    showAlert('groups-alert', data.error, 'error');
+                }
+            } catch (error) {
+                showAlert('groups-alert', 'Error: ' + error.message, 'error');
+            }
+        }
+
+        // ---------- DASHBOARD ----------
+        function showDashboard() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-tachometer-alt"></i> Waleed · Dashboard</h1>
+                
+                <div class="box">
+                    <h2><i class="fas fa-key"></i> Generate Pairing Code</h2>
+                    <div id="pairing-alert"></div>
+                    <form onsubmit="handleGeneratePairingCode(event)">
+                        <input type="text" id="phone-number" placeholder="Phone with country code (e.g., 917XXXXXXXXX)" required>
+                        <button type="submit"><i class="fas fa-mobile-alt"></i> Generate Code</button>
+                    </form>
+                    <div id="pairing-result"></div>
+                    <div style="text-align:center;margin-top:12px;">
+                        <a href="#" onclick="logout();" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);border-color:#ff2a5e;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <h2><i class="fas fa-server"></i> Your Sessions</h2>
+                    <div id="user-sessions">Loading...</div>
+                </div>
+
+                <div class="box">
+                    <h2><i class="fas fa-paper-plane"></i> Send Messages / Images</h2>
+                    <div id="send-message-alert"></div>
+                    <select id="phone-number-select" onchange="loadSessionsForSending(this.value)">
+                        <option value="">-- Select Phone Number --</option>
+                    </select>
+                    <div id="session-selection-send" class="hidden">
+                        <select id="session-select-send" onchange="showSendForm()">
+                            <option value="">-- Select Session --</option>
+                        </select>
+                    </div>
+                    <div id="send-message-form" class="hidden">
+                        <form onsubmit="handleSendMessage(event)">
+                            <input type="hidden" id="selected-session-send">
+                            <h3 style="margin:20px 0 12px 0;text-align:left;"><i class="fas fa-toggle-on"></i> Type:</h3>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="send-messages" name="sendType" value="message" checked onchange="toggleFileInputType()">
+                                    <label for="send-messages"><i class="fas fa-comments"></i> Message File</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="send-image" name="sendType" value="image" onchange="toggleFileInputType()">
+                                    <label for="send-image"><i class="fas fa-image"></i> Image</label>
+                                </div>
+                            </div>
+                            <input type="text" id="target" placeholder="Target Number or Group ID (without @)" required>
+                            <select id="targetType" required>
+                                <option value="">-- Target Type --</option>
+                                <option value="individual">Individual</option>
+                                <option value="group">Group</option>
+                            </select>
+                            <input type="number" id="delaySec" placeholder="Delay between sends (seconds)" required min="1">
+                            <input type="text" id="prefix" placeholder="Prefix (optional)">
+                            <label for="messageFile" style="display:block;text-align:left;margin:12px 0 6px 0;color:#b0b0ff;">Upload Message File (.txt):</label>
+                            <input type="file" id="messageFile" accept=".txt" required>
+                            <button type="submit"><i class="fas fa-rocket"></i> Start Sending</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <h2><i class="fas fa-users"></i> View Groups</h2>
+                    <div id="groups-alert"></div>
+                    <select id="phone-number-select-groups" onchange="loadSessionsForGroups(this.value)">
+                        <option value="">-- Select Phone Number --</option>
+                    </select>
+                    <div id="session-selection-groups" class="hidden">
+                        <select id="session-select-groups" onchange="enableShowGroupsButton()">
+                            <option value="">-- Select Session --</option>
+                        </select>
+                    </div>
+                    <div id="show-groups-button" class="hidden">
+                        <input type="hidden" id="selected-session-groups">
+                        <button onclick="showGroups()" style="max-width:300px;"><i class="fas fa-search"></i> Show Groups</button>
+                    </div>
+                    <div id="groups-list"></div>
+                </div>
+            `;
+            updateUptime();
+            loadUserSessions();
+            loadPhoneNumbers();
+        }
+
+        // ---------- ADMIN DASHBOARD ----------
+        function showAdminDashboard() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-user-shield"></i> Admin · Waleed</h1>
+                <div class="box">
+                    <h2><i class="fas fa-chart-bar"></i> System Stats</h2>
+                    <div id="system-stats">Loading...</div>
+                    <div style="text-align:center;margin-top:12px;">
+                        <a href="#" onclick="logout();" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);border-color:#ff2a5e;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+                <div class="box">
+                    <h2><i class="fas fa-server"></i> All Sessions</h2>
+                    <button onclick="refreshAdminSessions()" style="max-width:250px;"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    <div id="all-sessions">Loading...</div>
+                </div>
+            `;
+            updateUptime();
+            loadAdminStats();
+            loadAllSessions();
+        }
+
+        // ---------- SESSION STATUS / TASK LOGS ----------
+        async function showSessionStatus(sessionId) {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-chart-line"></i> Session Status</h1>
+                <div class="box">
+                    <h2><i class="fas fa-info-circle"></i> Details</h2>
+                    <div id="session-details">Loading...</div>
+                    <div style="margin-top:20px;text-align:center;">
+                        <a href="#" onclick="event.preventDefault(); showDashboard();" class="btn-back"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                    </div>
+                </div>
+                <div class="box">
+                    <h2><i class="fas fa-tasks"></i> Active Tasks</h2>
+                    <div id="tasks-container">Loading...</div>
+                </div>
+            `;
+            updateUptime();
+            loadSessionDetails(sessionId);
+            startLiveStatusUpdates(sessionId);
+        }
+
+        async function showTaskLogs(sessionId, taskId) {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div style="text-align:center;margin-bottom:10px;">
+                    <span class="uptime-display" id="uptime"><i class="fas fa-clock"></i> Server Uptime: Loading...</span>
+                </div>
+                <h1 style="text-align:center;"><i class="fas fa-terminal"></i> Task Logs</h1>
+                <div class="box">
+                    <h2><i class="fas fa-info-circle"></i> Task Details</h2>
+                    <div id="task-details">Loading...</div>
+                    <div style="margin-top:20px;text-align:center;">
+                        <a href="#" onclick="event.preventDefault(); showSessionStatus('${sessionId}');" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Session</a>
+                    </div>
+                </div>
+                <div class="box">
+                    <h2><i class="fas fa-file-alt"></i> Live Logs</h2>
+                    <div id="logs-container">Loading...</div>
+                </div>
+            `;
+            updateUptime();
+            loadTaskDetails(sessionId, taskId);
+            startLiveLogsUpdates(sessionId, taskId);
+        }
+
+        // ---------- SESSION / TASK LOADERS ----------
+        async function loadSessionDetails(sessionId) {
+            try {
+                const response = await fetch(`/api/live-status?sessionId=${sessionId}`);
+                const data = await response.json();
+                if (data.error) {
+                    document.getElementById('session-details').innerHTML = '<p style="color:#ff7a7a;">Error: ' + data.error + '</p>';
+                    return;
+                }
+                document.getElementById('session-details').innerHTML = `
+                    <p><strong>WhatsApp Number:</strong> ${data.number}</p>
+                    <p><strong>Session ID:</strong> <span style="font-family:monospace;font-size:0.85rem;">${sessionId}</span></p>
+                    <p><strong>Connection:</strong> <span class="status-badge ${data.isConnected ? 'status-connected' : 'status-disconnected'}" id="session-connection-status">
+                        ${data.isConnected ? '<i class="fas fa-check-circle"></i> Connected' : '<i class="fas fa-times-circle"></i> Disconnected'}
+                    </span></p>
+                    <p><strong><i class="fas fa-tasks"></i> Running Tasks:</strong> <span id="running-tasks-count" style="color:#7ac0ff;font-weight:bold;font-size:1.4rem;">${data.runningTasksCount || 0}</span></p>
+                    ${data.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${data.createdAtFormatted}</p>` : ''}
+                `;
+                loadTasksContainer(sessionId, data.tasks);
+            } catch (error) {
+                document.getElementById('session-details').innerHTML = '<p style="color:#ff7a7a;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        function loadTasksContainer(sessionId, tasks) {
+            const container = document.getElementById('tasks-container');
+            if (!container) return;
+            if (!tasks || tasks.length === 0) {
+                container.innerHTML = '<p style="color:#aab;">No tasks for this session.</p>';
+                return;
+            }
+            let html = '';
+            tasks.forEach(task => {
+                const taskTypeIcon = task.taskType === 'image' ? 'fa-image' : 'fa-comments';
+                const taskTypeLabel = task.taskType === 'image' ? 'Image Task' : 'Message Task';
+                html += `
+                    <div class="task-item">
+                        <h3><i class="fas ${taskTypeIcon}"></i> ${taskTypeLabel} · ${task.target} (${task.targetType})</h3>
+                        <p><strong>Task ID:</strong> <span style="font-family:monospace;font-size:0.85rem;">${task.taskId}</span></p>
+                        <p><strong>Status:</strong> <span class="status-badge ${task.isSending ? 'status-running' : 'status-stopped'}" id="status-${task.taskId}">
+                            ${task.isSending ? '<i class="fas fa-sync-alt"></i> Running' : '<i class="fas fa-stop-circle"></i> Stopped'}
+                        </span></p>
+                        ${task.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${task.createdAtFormatted}</p>` : ''}
+                        <p><strong>${task.taskType === 'image' ? 'Images' : 'Messages'} Sent:</strong> <span id="messages-${task.taskId}">${task.sentMessages}${task.totalMessages > 0 ? ' / ' + task.totalMessages : ''}</span></p>
+                        ${task.totalMessages > 0 ? `<p><strong>Current Index:</strong> <span id="index-${task.taskId}">${task.currentIndex}</span></p>` : ''}
+                        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+                            <a href="#" onclick="event.preventDefault(); showTaskLogs('${sessionId}', '${task.taskId}');"><i class="fas fa-terminal"></i> Logs</a>
+                            <a href="#" onclick="event.preventDefault(); confirmStopTask('${sessionId}', '${task.taskId}');" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);border-color:#ff2a5e;"><i class="fas fa-stop-circle"></i> Stop</a>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // ---------- LIVE UPDATES ----------
+        function startLiveStatusUpdates(sessionId) {
+            if (statusUpdateInterval) clearInterval(statusUpdateInterval);
+            statusUpdateInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/live-status?sessionId=${sessionId}`);
+                    const data = await response.json();
+                    if (data.error) return;
+                    const connectionElem = document.getElementById('session-connection-status');
+                    if (connectionElem) {
+                        connectionElem.className = data.isConnected ? 'status-badge status-connected' : 'status-badge status-disconnected';
+                        connectionElem.innerHTML = data.isConnected ? '<i class="fas fa-check-circle"></i> Connected' : '<i class="fas fa-times-circle"></i> Disconnected';
+                    }
+                    const runningElem = document.getElementById('running-tasks-count');
+                    if (runningElem) runningElem.textContent = data.runningTasksCount || 0;
+                    if (!data.tasks) return;
+                    data.tasks.forEach(task => {
+                        const statusElem = document.getElementById('status-' + task.taskId);
+                        const messagesElem = document.getElementById('messages-' + task.taskId);
+                        const indexElem = document.getElementById('index-' + task.taskId);
+                        if (statusElem) {
+                            statusElem.className = task.isSending ? 'status-badge status-running' : 'status-badge status-stopped';
+                            statusElem.innerHTML = task.isSending ? '<i class="fas fa-sync-alt"></i> Running' : '<i class="fas fa-stop-circle"></i> Stopped';
+                        }
+                        if (messagesElem) messagesElem.textContent = task.sentMessages + (task.totalMessages > 0 ? ' / ' + task.totalMessages : '');
+                        if (indexElem) indexElem.textContent = task.currentIndex;
+                    });
+                } catch (error) { console.error('Status update error:', error); }
+            }, 5000);
+        }
+
+        async function loadTaskDetails(sessionId, taskId) {
+            try {
+                const response = await fetch(`/api/live-logs?sessionId=${sessionId}&taskId=${taskId}`);
+                const data = await response.json();
+                if (data.error) {
+                    document.getElementById('task-details').innerHTML = '<p style="color:#ff7a7a;">Error: ' + data.error + '</p>';
+                    return;
+                }
+                if (data.taskInfo) {
+                    const taskTypeIcon = data.taskInfo.taskType === 'image' ? 'fa-image' : 'fa-comments';
+                    const taskTypeLabel = data.taskInfo.taskType === 'image' ? 'Image Task' : 'Message Task';
+                    document.getElementById('task-details').innerHTML = `
+                        <p><strong><i class="fas ${taskTypeIcon}"></i> Type:</strong> ${taskTypeLabel}</p>
+                        <p><strong>Task ID:</strong> <span style="font-family:monospace;font-size:0.85rem;">${taskId}</span></p>
+                        <p><strong>Status:</strong> <span class="status-badge ${data.taskInfo.isSending ? 'status-running' : 'status-stopped'}" id="task-status">
+                            ${data.taskInfo.isSending ? '<i class="fas fa-sync-alt"></i> Running' : '<i class="fas fa-stop-circle"></i> Stopped'}
+                        </span></p>
+                        ${data.taskInfo.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${data.taskInfo.createdAtFormatted}</p>` : ''}
+                        <p><strong>${data.taskInfo.taskType === 'image' ? 'Images' : 'Messages'} Sent:</strong> <span id="task-messages">${data.taskInfo.sentMessages}${data.taskInfo.totalMessages > 0 ? ' / ' + data.taskInfo.totalMessages : ''}</span></p>
+                    `;
+                }
+                updateLogsContainer(data.logs);
+            } catch (error) {
+                document.getElementById('task-details').innerHTML = '<p style="color:#ff7a7a;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        function updateLogsContainer(logs) {
+            const container = document.getElementById('logs-container');
+            if (!container) return;
+            if (!logs || logs.length === 0) {
+                container.innerHTML = '<div style="padding:18px;background:rgba(255,40,200,0.05);border-radius:20px;border:1px solid rgba(255,60,200,0.1);"><i class="fas fa-info-circle"></i> No logs yet. Waiting for messages...</div>';
+                return;
+            }
+            let html = '';
+            logs.forEach(log => {
+                const borderColor = log.type === 'success' ? '#7affb0' : log.type === 'error' ? '#ff7a7a' : '#7ac0ff';
+                const bgColor = log.type === 'success' ? '0,255,150' : log.type === 'error' ? '255,50,80' : '50,150,255';
+                html += `<div style="margin:10px 0;padding:12px 16px;border-radius:16px;border-left:4px solid ${borderColor};background:rgba(${bgColor},0.08);font-family:monospace;font-size:0.9rem;">`;
+                html += `<div><strong>${log.message}</strong></div>`;
+                html += `<div style="font-size:0.8rem;margin-top:4px;color:#b0b0e0;">${log.details}</div>`;
+                html += '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function startLiveLogsUpdates(sessionId, taskId) {
+            if (logsUpdateInterval) clearInterval(logsUpdateInterval);
+            logsUpdateInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/live-logs?sessionId=${sessionId}&taskId=${taskId}`);
+                    const data = await response.json();
+                    if (data.error) return;
+                    if (data.taskInfo) {
+                        const statusElem = document.getElementById('task-status');
+                        const messagesElem = document.getElementById('task-messages');
+                        if (statusElem) {
+                            statusElem.className = data.taskInfo.isSending ? 'status-badge status-running' : 'status-badge status-stopped';
+                            statusElem.innerHTML = data.taskInfo.isSending ? '<i class="fas fa-sync-alt"></i> Running' : '<i class="fas fa-stop-circle"></i> Stopped';
+                        }
+                        if (messagesElem) messagesElem.textContent = data.taskInfo.sentMessages + (data.taskInfo.totalMessages > 0 ? ' / ' + data.taskInfo.totalMessages : '');
+                    }
+                    if (data.logs) updateLogsContainer(data.logs);
+                } catch (error) { console.error('Logs update error:', error); }
+            }, 5000);
+        }
+
+        // ---------- ADMIN LOADERS ----------
+        async function loadAdminStats() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                document.getElementById('system-stats').innerHTML = `
+                    <p><strong><i class="fas fa-server"></i> Active Sessions:</strong> ${data.sessions}</p>
+                    <p><strong><i class="fas fa-tasks"></i> Total Tasks:</strong> ${data.tasks}</p>
+                    <p><strong><i class="fas fa-sync-alt"></i> Running Tasks:</strong> ${data.activeTasks}</p>
+                    <p><strong><i class="fas fa-memory"></i> Memory:</strong> ${data.memory.used} / ${data.memory.total}</p>
+                    <p><strong><i class="fas fa-clock"></i> Uptime:</strong> ${data.uptime}</p>
+                `;
+            } catch (error) {
+                document.getElementById('system-stats').innerHTML = '<p style="color:#ff7a7a;">Error loading stats: ' + error.message + '</p>';
+            }
+        }
+
+        async function loadAllSessions() {
+            try {
+                const response = await fetch('/api/admin/all-sessions');
+                const sessions = await response.json();
+                const container = document.getElementById('all-sessions');
+                if (sessions.length === 0) {
+                    container.innerHTML = '<p style="color:#aab;">No active sessions.</p>';
+                    return;
+                }
+                let html = '';
+                for (const session of sessions) {
+                    html += `
+                        <div class="session-item">
+                            <h3><i class="fas fa-mobile-alt"></i> ${session.number}</h3>
+                            <p><strong>Session ID:</strong> <span style="font-family:monospace;font-size:0.85rem;">${session.sessionId}</span></p>
+                            <p><strong>User:</strong> ${session.username} (${session.userId})</p>
+                            <p><strong>Status:</strong> <span class="status-badge ${session.isConnected ? 'status-connected' : 'status-disconnected'}">
+                                ${session.isConnected ? '<i class="fas fa-check-circle"></i> Connected' : '<i class="fas fa-times-circle"></i> Disconnected'}
+                            </span></p>
+                            ${session.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${session.createdAtFormatted}</p>` : ''}
+                            <p><strong>Tasks:</strong> ${session.tasksCount} total (${session.activeTasksCount} running)</p>
+                            <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
+                                <a href="#" onclick="event.preventDefault(); showAdminSessionDetails('${session.sessionId}');"><i class="fas fa-eye"></i> Details</a>
+                                <a href="#" onclick="event.preventDefault(); confirmAdminDeleteSession('${session.sessionId}');" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);border-color:#ff2a5e;"><i class="fas fa-trash"></i> Delete</a>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
+            } catch (error) {
+                document.getElementById('all-sessions').innerHTML = '<p style="color:#ff7a7a;">Error: ' + error.message + '</p>';
+            }
+        }
+
+        // ---------- ADMIN DETAILS / MODALS ----------
+        async function showAdminSessionDetails(sessionId) {
+            try {
+                const response = await fetch(`/api/admin/session-details?sessionId=${sessionId}`);
+                const data = await response.json();
+                if (data.error) { alert('Error: ' + data.error); return; }
+                let sessionDetailsHtml = `
+                    <div class="admin-details-box" style="background:rgba(12,10,30,0.7);padding:18px;border-radius:20px;border:1px solid rgba(255,60,200,0.1);">
+                        <h3><i class="fas fa-mobile-alt"></i> Session Details</h3>
+                        <p><strong>Session ID:</strong> <span style="font-family:monospace;font-size:0.8rem;">${data.sessionId}</span></p>
+                        <p><strong>WhatsApp:</strong> ${data.number}</p>
+                        <p><strong>User:</strong> ${data.username} (${data.userId})</p>
+                        <p><strong>Status:</strong> <span class="status-badge ${data.isConnected ? 'status-connected' : 'status-disconnected'}">
+                            ${data.isConnected ? '<i class="fas fa-check-circle"></i> Connected' : '<i class="fas fa-times-circle"></i> Disconnected'}
+                        </span></p>
+                        ${data.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${data.createdAtFormatted}</p>` : ''}
+                    </div>
+                `;
+                let tasksHtml = '<div style="margin-top:16px;"><h3><i class="fas fa-tasks"></i> Active Tasks</h3></div>';
+                if (data.tasks && data.tasks.length > 0) {
+                    data.tasks.forEach(task => {
+                        const taskTypeIcon = task.taskType === 'image' ? 'fa-image' : 'fa-comments';
+                        const taskTypeLabel = task.taskType === 'image' ? 'Image' : 'Message';
+                        tasksHtml += `
+                            <div style="background:rgba(12,10,30,0.5);padding:16px;border-radius:16px;margin:12px 0;border:1px solid rgba(255,60,200,0.06);">
+                                <h3 style="font-size:1rem;"><i class="fas ${taskTypeIcon}"></i> ${taskTypeLabel} · ${task.target} (${task.targetType})</h3>
+                                <p><strong>Task ID:</strong> <span style="font-family:monospace;font-size:0.8rem;">${task.taskId}</span></p>
+                                <p><strong>Status:</strong> <span class="status-badge ${task.isSending ? 'status-running' : 'status-stopped'}">
+                                    ${task.isSending ? '<i class="fas fa-sync-alt"></i> Running' : '<i class="fas fa-stop-circle"></i> Stopped'}
+                                </span></p>
+                                ${task.createdAtFormatted ? `<p><strong><i class="fas fa-calendar-plus"></i> Created:</strong> ${task.createdAtFormatted}</p>` : ''}
+                                <p><strong>Progress:</strong> ${task.sentMessages}${task.totalMessages > 0 ? ' / ' + task.totalMessages : ''} ${task.taskType === 'image' ? 'images' : 'messages'}</p>
+                                <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;">
+                                    <a href="#" onclick="event.preventDefault(); showAdminTaskLogs('${task.taskId}');" style="font-size:0.8rem;padding:8px 16px;"><i class="fas fa-terminal"></i> Logs</a>
+                                    <a href="#" onclick="event.preventDefault(); confirmAdminDeleteTask('${sessionId}', '${task.taskId}');" style="background:linear-gradient(135deg,#ff2a5e,#cc1f4a);font-size:0.8rem;padding:8px 16px;"><i class="fas fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    tasksHtml += '<p style="color:#aab;">No tasks.</p>';
+                }
+                showModal('Admin Session Details', sessionDetailsHtml + tasksHtml, [
+                    { text: 'Close', class: 'btn-cancel', action: closeModal }
+                ], true);
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        async function showAdminTaskLogs(taskId) {
+            try {
+                const response = await fetch(`/api/admin/task-logs?taskId=${taskId}`);
+                const data = await response.json();
+                if (data.error) { alert('Error: ' + data.error); return; }
+                let logsHtml = '<div style="max-height:400px;overflow-y:auto;background:rgba(0,0,0,0.4);padding:16px;border-radius:16px;text-align:left;">';
+                if (data.logs && data.logs.length > 0) {
+                    data.logs.forEach(log => {
+                        const borderColor = log.type === 'success' ? '#7affb0' : log.type === 'error' ? '#ff7a7a' : '#7ac0ff';
+                        const bgColor = log.type === 'success' ? '0,255,150' : log.type === 'error' ? '255,50,80' : '50,150,255';
+                        logsHtml += `<div style="margin:8px 0;padding:10px;border-radius:12px;border-left:3px solid ${borderColor};background:rgba(${bgColor},0.06);font-family:monospace;font-size:0.85rem;">
+                            <div><strong>${log.message}</strong></div>
+                            <div style="font-size:0.75rem;margin-top:4px;">${log.details}</div>
+                        </div>`;
+                    });
+                } else {
+                    logsHtml += '<p>No logs available.</p>';
+                }
+                logsHtml += '</div>';
+                showModal(`Task Logs · ${taskId}`, logsHtml, [
+                    { text: 'Close', class: 'btn-cancel', action: closeModal }
+                ], true);
+            } catch (error) { alert('Error: ' + error.message); }
+        }
+
+        function refreshAdminSessions() { loadAllSessions(); }
+
+        // ---------- CONFIRM / STOP / DELETE ----------
+        function confirmStopSession(sessionId) {
+            showModal('<i class="fas fa-exclamation-triangle"></i> Delete Session',
+                `<p style="font-size:1rem;">Are you sure you want to delete this session?</p><p style="color:#ff7a7a;margin-top:12px;"><i class="fas fa-exclamation-triangle"></i> This cannot be undone.</p>`,
+                [
+                    { text: 'Yes, Delete', class: 'btn-danger', action: () => stopSession(sessionId) },
+                    { text: 'Cancel', class: 'btn-cancel', action: closeModal }
+                ]
+            );
+        }
+
+        async function stopSession(sessionId) {
+            closeModal();
+            try {
+                const response = await fetch('/stop-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId })
+                });
+                const data = await response.json();
+                if (data.success) { alert('✅ ' + data.message); showDashboard(); } 
+                else { alert('❌ Error: ' + data.error); }
+            } catch (error) { alert('❌ Error: ' + error.message); }
+        }
+
+        function confirmStopTask(sessionId, taskId) {
+            showModal('<i class="fas fa-exclamation-triangle"></i> Delete Task',
+                `<p style="font-size:1rem;">Delete this task?</p><p style="color:#ff7a7a;margin-top:12px;"><i class="fas fa-exclamation-triangle"></i> This cannot be undone.</p>`,
+                [
+                    { text: 'Yes, Delete', class: 'btn-danger', action: () => stopTask(sessionId, taskId) },
+                    { text: 'Cancel', class: 'btn-cancel', action: closeModal }
+                ]
+            );
+        }
+
+        async function stopTask(sessionId, taskId) {
+            closeModal();
+            try {
+                const response = await fetch('/stop-task', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, taskId })
+                });
+                const data = await response.json();
+                if (data.success) { alert('✅ ' + data.message); showSessionStatus(sessionId); } 
+                else { alert('❌ Error: ' + data.error); }
+            } catch (error) { alert('❌ Error: ' + error.message); }
+        }
+
+        function confirmAdminDeleteSession(sessionId) {
+            showModal('<i class="fas fa-user-shield"></i> Admin Delete Session',
+                `<p style="font-size:1rem;">Delete this session permanently?</p><p style="color:#ff7a7a;margin-top:12px;"><i class="fas fa-exclamation-triangle"></i> Cannot be undone.</p>`,
+                [
+                    { text: 'Yes, Delete', class: 'btn-danger', action: () => adminDeleteSession(sessionId) },
+                    { text: 'Cancel', class: 'btn-cancel', action: closeModal }
+                ]
+            );
+        }
+
+        async function adminDeleteSession(sessionId) {
+            closeModal();
+            try {
+                const response = await fetch('/api/admin/delete-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId })
+                });
+                const data = await response.json();
+                if (data.success) { alert('✅ ' + data.message); loadAllSessions(); } 
+                else { alert('❌ Error: ' + data.error); }
+            } catch (error) { alert('❌ Error: ' + error.message); }
+        }
+
+        function confirmAdminDeleteTask(sessionId, taskId) {
+            showModal('<i class="fas fa-user-shield"></i> Admin Delete Task',
+                `<p style="font-size:1rem;">Delete this task?</p><p style="color:#ff7a7a;margin-top:12px;"><i class="fas fa-exclamation-triangle"></i> Cannot be undone.</p>`,
+                [
+                    { text: 'Yes, Delete', class: 'btn-danger', action: () => adminDeleteTask(sessionId, taskId) },
+                    { text: 'Cancel', class: 'btn-cancel', action: closeModal }
+                ]
+            );
+        }
+
+        async function adminDeleteTask(sessionId, taskId) {
+            closeModal();
+            try {
+                const response = await fetch('/api/admin/delete-task', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId, taskId })
+                });
+                const data = await response.json();
+                if (data.success) { alert('✅ ' + data.message); showAdminSessionDetails(sessionId); } 
+                else { alert('❌ Error: ' + data.error); }
+            } catch (error) { alert('❌ Error: ' + error.message); }
+        }
+
+        // ---------- MODAL HELPERS ----------
+        function showModal(title, content, buttons, isLarge = false) {
+            closeModal();
+            const modal = document.createElement('div');
+            modal.id = 'confirmation-modal';
+            modal.className = 'modal';
+            modal.style.display = 'block';
+            let buttonsHtml = '';
+            buttons.forEach((btn, index) => {
+                const btnId = `modal-btn-${index}`;
+                buttonsHtml += `<button id="${btnId}" class="${btn.class}">${btn.text}</button>`;
+                modalCallbacks[btnId] = btn.action;
+            });
+            const modalContentClass = isLarge ? 'modal-content large-modal' : 'modal-content';
+            modal.innerHTML = `
+                <div class="${modalContentClass}">
+                    <h2>${title}</h2>
+                    ${content}
+                    <div class="modal-buttons">${buttonsHtml}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            buttons.forEach((btn, index) => {
+                const btnId = `modal-btn-${index}`;
+                const btnElement = document.getElementById(btnId);
+                if (btnElement) btnElement.addEventListener('click', modalCallbacks[btnId]);
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('confirmation-modal');
+            if (modal) {
+                Object.keys(modalCallbacks).forEach(btnId => {
+                    const btn = document.getElementById(btnId);
+                    if (btn) btn.removeEventListener('click', modalCallbacks[btnId]);
+                });
+                modalCallbacks = {};
+                modal.remove();
+            }
+        }
+
+        // ---------- ALERT / UPTIME / LOGOUT ----------
+        function showAlert(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            element.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            if (type === 'success' || type === 'info') {
+                setTimeout(() => { element.innerHTML = ''; }, 5000);
+            }
+        }
+
+        async function updateUptime() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                const uptimeElement = document.getElementById('uptime');
+                if (uptimeElement) {
+                    uptimeElement.innerHTML = `<i class="fas fa-clock"></i> Server Uptime: ${data.uptime}`;
+                }
+            } catch (error) {
+                const uptimeElement = document.getElementById('uptime');
+                if (uptimeElement) uptimeElement.innerHTML = `<i class="fas fa-clock" style="color:#ff7a7a;"></i> Server Uptime: Error`;
+            }
+        }
+
+        function logout() { window.location.href = '/logout'; }
+
+        // ---------- INIT ----------
+        window.addEventListener('DOMContentLoaded', init);
+        window.addEventListener('beforeunload', () => {
+            if (statusUpdateInterval) clearInterval(statusUpdateInterval);
+            if (logsUpdateInterval) clearInterval(logsUpdateInterval);
+            if (uptimeInterval) clearInterval(uptimeInterval);
+        });
+    </script>
+</body>
+</html>
